@@ -5,15 +5,19 @@ interface Post {
     id: number;
     title: string;
     body: string;
-    userId: number;
+    userId: number ;
   }
 
-const usePostList = () => {
-    const fetchPosts = () => axios.get<Post[]>("https://jsonplaceholder.typicode.com/posts").then(res => res.data)
+const usePostList = (userId: number | undefined) => {
 
     return useQuery<Post[], Error>({
-        queryKey: ["posts"],
-        queryFn: fetchPosts
+        // it is like a request users/userId/posts
+        queryKey: userId ? ["users", userId, "posts"] : ['posts'],
+        queryFn: () => axios.get<Post[]>("https://jsonplaceholder.typicode.com/posts", {
+            params: {
+                userId
+            }
+        }).then(res => res.data)
     });
 };
 
