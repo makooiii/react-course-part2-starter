@@ -5,9 +5,9 @@ import axios from 'axios';
 
 const TodoForm = () => {
   const queryClient = useQueryClient();
-  const addTodo = useMutation({
+  const addTodo = useMutation<Todo, Error, Todo>({
     mutationFn: (todo: Todo) => 
-    axios.post<Todo>("https://jsonplaceholder.typicode.com/todos", todo)
+    axios.post<Todo>("https://jsonplaceholder.typicode.com/todosx", todo)
     .then(res => res.data),
     onSuccess: (savedTodo, newTodo) =>  {
       // APPROACH: invalidating the cache
@@ -22,6 +22,8 @@ const TodoForm = () => {
   const ref = useRef<HTMLInputElement>(null);
 
   return (
+    <>
+    {addTodo.error && <div className="alert alert-danger">{addTodo.error.message}</div>}
     <form className="row mb-3" onSubmit={ event => {
       event.preventDefault();
       if(ref.current && ref.current.value)
@@ -39,6 +41,7 @@ const TodoForm = () => {
         <button className="btn btn-primary">Add</button>
       </div>
     </form>
+    </>
   );
 };
 
