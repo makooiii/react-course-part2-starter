@@ -17,7 +17,7 @@ const useTodos = () => {
 
   return useQuery<Todo[], Error>({
     queryKey: CACHE_KEY_TODOS,
-    queryFn: apiClient.getAll,
+    queryFn: apiClient.getAll, // This function in apiclient become undefined. need to change it to function api = () =>{request}
     staleTime: 10 * 1000
   });
 };
